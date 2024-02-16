@@ -1,0 +1,22 @@
+.app{
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    background-color: #FCF5E6;
+}
+
+.calculator {
+    /* width: 300px; */
+    padding: 14px;
+    background-color: #99c9ff;
+}
+
+.btn-container{
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+}
