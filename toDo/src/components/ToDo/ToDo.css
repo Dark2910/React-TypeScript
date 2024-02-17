@@ -1,0 +1,18 @@
+.checked{
+    color: white;
+    background-color: #5a01a7;
+    text-decoration: line-through;
+}
+
+.form-check-container {
+    cursor: pointer;
+    overflow-wrap: anywhere;
+}
+
+.form-check-container input {
+    cursor: pointer;
+}
+
+.form-check-container label {
+    cursor: pointer;
+}
