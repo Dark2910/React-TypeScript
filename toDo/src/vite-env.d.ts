@@ -3,14 +3,13 @@
 declare module 'uuid';
 declare module 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
-type ToDo = {id: string, isFinished: boolean, text: string};
+export type ToDoType = {id: string, isFinished: boolean, text: string};
 
 export interface FormProps {
-    onFormSubmit: (string) => void;
-}
-export interface ToDoListProps {
-    toDos: Array<ToDo>;
+    formSubmit: (string) => void,
 }
 export interface ToDoProps {
-    toDo: ToDo;
+    toDo: ToDoType,
+    handleStatus: (string) => void,
+    handleDelete: (string) => void,
 }
