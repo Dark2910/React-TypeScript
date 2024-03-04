@@ -1,10 +1,11 @@
+import 'dotenv/config'
 import express from 'express';
 const app = express();
 
 
 //routers
 const routerD = require('./routers/routerDeportivas.ts')
-app.use('/api/rd', routerD);
+app.use('/api/sports', routerD);
 
 const router = express.Router();
 app.use('/', router);
@@ -15,9 +16,8 @@ router.get('/', async(req, res) => {
 });
 
 
-const PORT = 3000;
-const URL = `http://localhost:${PORT}`;
+const PORT = process.env.PORT;
 
 app.listen(PORT, () => {
-    console.log(`${URL} Server listening...`);
+    console.log(`http://localhost:${PORT} Server listening...`);
 })
