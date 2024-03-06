@@ -33,7 +33,7 @@ router.get('/:id', async(req, res) => {
 
         const pool = await sql.connect(dataBase);
         const result = await pool.request()
-            .input('id_deporte', Number(id))
+            .input('id_deporte',sql.Int, id)
             .execute('sp_deporte_get');
 
         if(result.recordset && result.recordset.length > 0) {
