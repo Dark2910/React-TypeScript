@@ -8,8 +8,23 @@ interface Sport {
     deporte_fecha_registro: string
 }
 
+interface Athletes {
+    id_deportista: number,
+    deportista_matricula: number,
+    deportista_nombre: string,
+    genero_nombre: string,
+    carrera_nombre: string,
+    deportista_fecha_registro: string
+}
 
 interface TableProps {
-    tableHeaders: string[],
-    tableData: Sport[]
+    data: Sport[] | Athletes[],
+}
+
+interface TableHead {
+    head: string,
+}
+
+interface TableBody {
+    body: object,
 }

@@ -1,31 +1,35 @@
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import '../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js'
-import { useEffect, useState } from 'react';
-import { getSports } from './use-cases/sports/get-sports.js'
 import './App.css';
+import { useEffect, useState } from 'react';
+import { getSports } from './use-cases/sports/get-sports.js';
+import { getAthletes } from './use-cases/athletes/get-athletes.js';
 import Table from './components/Table/Table.js';
 
 
 function App() {
-  const [sportsData, setSportsData] = useState<Sport[] | null>(null);
+  const [sportData, setSportData] = useState<Sport[]>([]);
+  const [athletesData, setAthletesData] = useState<Athletes[]>([]);
 
-  const fetchInformation = async () => {
+  const fetchSportInformation = async(): Promise<void> => {
     const result = await getSports();
-    setSportsData(result);
+    setSportData(result);
+  };
+
+  const fetchAthletesInformation = async(): Promise<void> => {
+    const result = await getAthletes(3);
+    setAthletesData(result);
   };
 
   useEffect(() => {
-    fetchInformation();
+    fetchSportInformation();
+    fetchAthletesInformation();
   }, []);
-
-  console.table(sportsData);
-
-  const tableHeaders = sportsData?.flatMap((sport) => Object.keys(sport)) || [];
-  const tableData = sportsData || [];
-
+  
   return (
     <div className='container'>
-      <Table tableHeaders={tableHeaders} tableData={tableData}/>
+      <Table data={sportData}/>
+      <Table data={athletesData}/>
     </div>
   )
 }
