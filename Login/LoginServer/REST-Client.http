@@ -1,0 +1,7 @@
+GET http://localhost:3000/api/login HTTP/1.1
+Content-Type: application/json
+
+{
+    "email": "espindola.a.e@hotmail.com",
+    "password": "0123456789"
+}
