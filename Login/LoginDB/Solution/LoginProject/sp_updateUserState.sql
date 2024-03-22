@@ -2,7 +2,7 @@ USE [Login]
 GO
 
 ALTER PROC [dbo].[sp_updateUserState](
-	@idUserCredentials INT
+	@idUserCredential INT
 )
 AS
 BEGIN
@@ -10,7 +10,7 @@ BEGIN
 	SET @idUserState = (SELECT us.idUserState
 							FROM [dbo].[UserState] us
 							INNER JOIN [dbo].[UserCredentials] uc ON uc.idUserState = us.idUserState
-							WHERE uc.idUserCredentials = @idUserCredentials);
+							WHERE uc.idUserCredential = @idUserCredential);
 
 	UPDATE [dbo].[UserState]
 	SET

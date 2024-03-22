@@ -2,7 +2,7 @@ USE [Login]
 GO
 
 ALTER PROC [dbo].[sp_updateUserAuthentication](
-	@idUserCredentials INT,
+	@idUserCredential INT,
 	@passwordHash VARCHAR(MAX)
 )
 AS
@@ -11,7 +11,7 @@ BEGIN
 	SET @idUserAuthentication = (SELECT ua.idUserAuthentication
 									FROM [dbo].[UserAuthentication] ua
 									INNER JOIN [dbo].[UserCredentials] uc ON uc.idUserAuthentication = ua.idUserAuthentication
-									WHERE uc.idUserCredentials = @idUserCredentials);
+									WHERE uc.idUserCredential = @idUserCredential);
 
 	UPDATE [dbo].[UserAuthentication]
 	SET

@@ -1,13 +1,13 @@
 USE [Login]
 GO
-/****** Object:  Table [dbo].[UserAuthentication]    Script Date: 3/11/2024 9:30:11 PM ******/
+/****** Object:  Table [dbo].[UserAuthentication]    Script Date: 3/20/2024 2:06:55 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [dbo].[UserAuthentication](
 	[idUserAuthentication] [int] IDENTITY(1,1) NOT NULL,
-	[passwordHash] [varchar](max) NOT NULL,
+	[passwordHash] [varchar](max) NULL,
 	[registrationDate] [datetime] NOT NULL,
  CONSTRAINT [PK__UserAuth__A5F175D9C7FFFBF8] PRIMARY KEY CLUSTERED 
 (
@@ -15,13 +15,13 @@ CREATE TABLE [dbo].[UserAuthentication](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[UserCredentials]    Script Date: 3/11/2024 9:30:11 PM ******/
+/****** Object:  Table [dbo].[UserCredentials]    Script Date: 3/20/2024 2:06:55 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [dbo].[UserCredentials](
-	[idUserCredentials] [int] IDENTITY(1,1) NOT NULL,
+	[idUserCredential] [int] IDENTITY(1,1) NOT NULL,
 	[userName] [varchar](50) NOT NULL,
 	[email] [varchar](50) NOT NULL,
 	[idUserAuthentication] [int] NOT NULL,
@@ -29,11 +29,19 @@ CREATE TABLE [dbo].[UserCredentials](
 	[registrationDate] [datetime] NOT NULL,
  CONSTRAINT [PK__UserCred__56DB33005D067BB2] PRIMARY KEY CLUSTERED 
 (
-	[idUserCredentials] ASC
+	[idUserCredential] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY],
+ CONSTRAINT [UQ_UserCredentials_email] UNIQUE NONCLUSTERED 
+(
+	[email] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY],
+ CONSTRAINT [UQ_UserCredentials_userName] UNIQUE NONCLUSTERED 
+(
+	[userName] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[UserData]    Script Date: 3/11/2024 9:30:11 PM ******/
+/****** Object:  Table [dbo].[UserData]    Script Date: 3/20/2024 2:06:55 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -43,7 +51,7 @@ CREATE TABLE [dbo].[UserData](
 	[firstName] [varchar](50) NOT NULL,
 	[lastName] [varchar](50) NOT NULL,
 	[birthday] [date] NOT NULL,
-	[idUserCredentials] [int] NOT NULL,
+	[idUserCredential] [int] NOT NULL,
 	[registrationDate] [datetime] NOT NULL,
  CONSTRAINT [PK__UserData__1B54D34A59108BC3] PRIMARY KEY CLUSTERED 
 (
@@ -51,7 +59,7 @@ CREATE TABLE [dbo].[UserData](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[UserState]    Script Date: 3/11/2024 9:30:11 PM ******/
+/****** Object:  Table [dbo].[UserState]    Script Date: 3/20/2024 2:06:55 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -78,19 +86,16 @@ ALTER TABLE [dbo].[UserState] ADD  CONSTRAINT [DF__UserState__regis__412EB0B6]  
 GO
 ALTER TABLE [dbo].[UserCredentials]  WITH CHECK ADD  CONSTRAINT [FK_UserCredentials_UserAuthentication] FOREIGN KEY([idUserAuthentication])
 REFERENCES [dbo].[UserAuthentication] ([idUserAuthentication])
-ON DELETE CASCADE
 GO
 ALTER TABLE [dbo].[UserCredentials] CHECK CONSTRAINT [FK_UserCredentials_UserAuthentication]
 GO
 ALTER TABLE [dbo].[UserCredentials]  WITH CHECK ADD  CONSTRAINT [FK_UserCredentials_UserState] FOREIGN KEY([idUserState])
 REFERENCES [dbo].[UserState] ([idUserState])
-ON DELETE CASCADE
 GO
 ALTER TABLE [dbo].[UserCredentials] CHECK CONSTRAINT [FK_UserCredentials_UserState]
 GO
-ALTER TABLE [dbo].[UserData]  WITH CHECK ADD  CONSTRAINT [FK_UserData_UserCredentials] FOREIGN KEY([idUserCredentials])
-REFERENCES [dbo].[UserCredentials] ([idUserCredentials])
-ON DELETE CASCADE
+ALTER TABLE [dbo].[UserData]  WITH CHECK ADD  CONSTRAINT [FK_UserData_UserCredentials] FOREIGN KEY([idUserCredential])
+REFERENCES [dbo].[UserCredentials] ([idUserCredential])
 GO
 ALTER TABLE [dbo].[UserData] CHECK CONSTRAINT [FK_UserData_UserCredentials]
 GO

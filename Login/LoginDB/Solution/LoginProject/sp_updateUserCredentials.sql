@@ -4,7 +4,7 @@ GO
 ALTER PROCEDURE [dbo].[sp_updateUserCredentials](
 	@userName VARCHAR(50),
 	@email VARCHAR(50),
-	@idUserCredentials INT
+	@idUserCredential INT
 )
 AS
 BEGIN
@@ -12,5 +12,5 @@ BEGIN
 	SET
 		userName = @userName,
 		email = @email
-	WHERE idUserCredentials = @idUserCredentials
+	WHERE idUserCredential = @idUserCredential
 END;

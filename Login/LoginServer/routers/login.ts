@@ -1,7 +1,9 @@
-import express, {Express, Router} from 'express';
+import express, { Router} from 'express';
 import sql from 'mssql';
 import cors from 'cors';
-const dataBase = require('../connection.ts');
+import comparePasswords from '../use-cases/comparePasswords';
+import hashPassword from '../use-cases/hashPassword';
+const dataBase = require('../connection');
 
 //Router
 const router: Router = express.Router();
@@ -11,18 +13,19 @@ router.use(cors());
 router.use(express.json());
 
 //Query
-router.get('/', async(req, res) => {
+router.post('/', async(req, res) => {
     try {
-        const {email} = req.body;
-        const {password} = req.body;
+        const {email, password} = req.body;
 
         const pool = await sql.connect(dataBase);
         const result = await pool.request()
             .input('email', sql.VarChar(50), email)
-            .input('password', sql.VarChar(50), password)
+            .output('password', sql.VarChar(sql.MAX))
             .execute('[dbo].[sp_login]');
 
-        res.send(result.recordset);
+        const match = await comparePasswords(password, result.output.password);
+
+        return res.send(match);
     } catch (error) {
         console.error(error);
         return res.status(500).json({error: 'Error executing SQL query'});
